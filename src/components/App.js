@@ -1,7 +1,7 @@
 //import './App.css';
 //import MainPage from "./views/MainPage/MainPage.js";
-import { Route, Switch } from "react-router-dom";
-import MainPage from './views/MainPage';
+import { Route } from "react-router-dom";
+import MainPage from "./views/MainPage";
 
 function App() {
   return (
