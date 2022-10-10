@@ -1,21 +1,23 @@
-import { useMqttState, useSubscription } from "mqtt-react-hooks";
-import React, { useEffect, useRef, useState } from "react";
+import { useMqttState, useSubscription } from 'mqtt-react-hooks';
+import React, { useEffect, useRef, useState } from 'react';
 //import ChatOnline from "../../components/chatOnline/ChatOnline";
-import MessageForm from "../message/MessageForm";
-import "./messenger.css";
+import MessageForm from '../message/MessageForm';
+import './messenger.css';
 //import { AuthContext } from "../../context/AuthContext";
-import Tobbar from "../../components/topbar/Topbar";
+import Tobbar from '../../components/topbar/Topbar';
+
+const myId = 'biden';
 
 function MainPage() {
   const { connectionStatus } = useMqttState();
-  const { message } = useSubscription(["test", "fuck"]);
+  const { message } = useSubscription(['test', 'fuck']);
 
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(true);
   const [messages, setMessages] = useState([
-    { text: "와 손흥민 너무 잘한다~!! 최고!!", owner: true },
+    { text: '와 손흥민 너무 잘한다~!! 최고!!', id: 'biden' },
   ]);
-  const [newMessage, setNewMessage] = useState("");
+  const [newMessage, setNewMessage] = useState('');
   //const [arrivalMessage, setArrivalMessage] = useState(null);
   //const [onlineUsers, setOnlineUsers] = useState([]);
   //const socket = useRef();
@@ -43,7 +45,7 @@ function MainPage() {
 */
 
   useEffect(() => {
-    setMessages((prev) => [...prev, { text: message?.message, owner: false }]);
+    setMessages((prev) => [...prev, { text: message?.message, id: myId }]);
   }, [message]);
 
   /*
@@ -84,7 +86,7 @@ function MainPage() {
 */
 
   const handleSubmit = () => {
-    setMessages((prev) => [...prev, { text: newMessage, owner: true }]);
+    setMessages((prev) => [...prev, { text: newMessage, id: myId }]);
   };
 
   /*
@@ -118,14 +120,14 @@ function MainPage() {
   useEffect(() => {}, []);
 
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   return (
     <>
       <Tobbar />
       <div>{`Connect Status : ${connectionStatus} | Current Topic : ${message?.topic}`}</div>
-      <div style={{ display: "flex", flexDirection: "column" }}></div>
+      <div style={{ display: 'flex', flexDirection: 'column' }}></div>
 
       <div className="messenger">
         {/*<div className="chatMenu">
@@ -186,8 +188,8 @@ function MainPage() {
                     <div ref={scrollRef}>
                       <MessageForm
                         message={m.text}
-                        //own={m.sender === user._id}
-                        own={m.owner}
+                        own={myId === m.id}
+                        //own={m.owner}
                         icon={null}
                       />
                     </div>
