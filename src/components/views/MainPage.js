@@ -4,20 +4,31 @@ import Tobbar from '../../components/topbar/Topbar';
 import MessageForm from '../message/MessageForm';
 import './messenger.css';
 
-const myId = 'biden';
+let myId = '';
+let myRoom = '';
 
 //http://test3.bonkab.com/?topic={채널명}&id={내아이디}
 
 function MainPage() {
   const { client } = useMqttState();
-  const { message } = useSubscription(['test', 'fuck']);
+  const { message } = useSubscription([myRoom, '']);
 
+  //topic 바꿔서 다른 url 들어가면 알아서 렌더링이 다시 시작되니깐 알아서 초기화되는 것처럼 보임
   const [messages, setMessages] = useState([
-    { text: '와 손흥민 너무 잘한다~!! 최고!!', id: 'biden' },
+    { text: '와 손흥민 너무 잘한다~!! 최고!!', id: myId },
   ]);
   const [newMessage, setNewMessage] = useState('');
-
   const scrollRef = useRef();
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    console.log('queryParams : ', queryParams);
+    const currentRoom = queryParams.get('topic');
+    const currentId = queryParams.get('id');
+    console.log('current Room & ID : ', currentRoom, currentId);
+    myRoom = currentRoom;
+    myId = currentId;
+  }, [myRoom]);
 
   useEffect(() => {
     console.log('new message arrived : ', message);
@@ -48,10 +59,10 @@ function MainPage() {
 
   const handleSubmit = () => {
     const jsonFormat = {
-      id: myId,
+      id: 'biden',
       text: newMessage,
     };
-    setMessages((prev) => [...prev, { text: newMessage, id: myId }]);
+    setMessages((prev) => [...prev, { text: newMessage, id: 'biden' }]);
     return client.publish('test', JSON.stringify(jsonFormat));
     //return client.publish('test', jsonFormat);
   };
