@@ -24,11 +24,6 @@
     max-width: 300px;
 }
 
-.messageBottom{
-    font-size: 12px;
-    margin-top: 10px;
-}
-
 .message.own{
     align-items: flex-end;
 }
